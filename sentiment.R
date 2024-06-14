@@ -59,8 +59,21 @@ sentiment_freq<-left_join(word_freq,sentiments,by='word')
 #Now explore the data. What is going on?
 #The data is counting how many times a word was said and the associated feeling
 
+#For the whole survey, were there more negative or positive sentiment words used
+sentiment_freq %>% 
+  group_by(sentiment) %>% 
+  tally
+#more positive than negative
 
+#Create an object with the number of negative and positive words used for each person.
+sentitment_name<-left_join(words,sentiment_freq,by='word')
+sentiment_count<-sentitment_name %>% 
+  group_by(first_name,sentiment) %>% 
+  tally()
 
+# In that object, create a new variabled named sentimentality, which is the number of positive words minus the number of negative words.
+sentitment_count<-sentiment_count %>% 
+  mutate(sentimentality=sum('positive'-'negative',na.rm=TRUE))
 
 
 
